@@ -1,39 +1,61 @@
 <script>
   let username = '';
   let password = '';
+  let confirmPassword = '';
+  let isRegistering = false;
 
-  $: isFormValid = username && password;
+  $: isFormValid = username && password && confirmPassword && password === confirmPassword;
 
   function handleSubmit(event) {
     event.preventDefault();
     console.log('Login attempt:', { username, password });
-    // Here you would typically send this data to your server
+    // Voici où vous devriez envoyer ces données à votre serveur
+  }
+
+  function toggleForm() {
+    isRegistering = !isRegistering;
   }
 </script>
 
 <div class="login-container">
-  <h2>Login</h2>
+  <h2>{isRegistering ? 'Enregistrer' : 'Connexion'}</h2>
   
-  <form on:submit|preventDefault={handleSubmit}>
-    <label for="username">Username:</label>
-    <input type="text" id="username" bind:value={username} required>
+  {#if isRegistering}
+    <form on:submit|preventDefault={handleSubmit}>
+      <label for="username">Nom d'utilisateur :</label>
+      <input type="text" id="username" bind:value={username} required>
 
-    <div class="password-input">
-      <label for="password">Password:</label>
-      <input type="password" id="password" bind:value={password} required>
-      <button class="toggle-password" on:click={() => password = password === '' ? '•' * password.length : ''}>Show Password</button>
-    </div>
+      <div class="password-input">
+        <label for="password">Mot de passe :</label>
+        <input type="password" id="password" bind:value={password} required>
+      </div>
 
-    <button type="submit">Login</button>
-    
-    {#if isFormValid}
-      <p class="success-message">Please wait while we log you in...</p>
-    {:else if username === '' || password === ''}
-      <p class="error-message">Please fill out all fields.</p>
-    {:else}
-      <p class="error-message">Invalid username or password.</p>
-    {/if}
-  </form>
+      <div class="password-input">
+        <label for="confirmPassword">Confirmer le mot de passe :</label>
+        <input type="password" id="confirmPassword" bind:value={confirmPassword} required>
+      </div>
+
+      <button type="submit">{isRegistering ? 'Enregistrer' : 'Basculer'}</button>
+      
+      <p class="error-message">Veuillez remplir tous les champs.</p>
+    </form>
+  {:else}
+    <form on:submit|preventDefault={handleSubmit}>
+      <label for="username">Nom d'utilisateur :</label>
+      <input type="text" id="username" bind:value={username} required>
+
+      <div class="password-input">
+        <label for="password">Mot de passe :</label>
+        <input type="password" id="password" bind:value={password} required>
+      </div>
+
+      <button type="submit">Connexion</button>
+      
+      <p class="error-message">Nom d'utilisateur ou mot de passe invalide.</p>
+    </form>
+  {/if}
+
+  <button class="toggle-form" on:click={toggleForm}>{isRegistering ? 'Déjà enregistré? Connectez-vous' : 'Pas encore enregistré? Enregistrez-vous'}</button>
 </div>
 
 <style>
@@ -54,7 +76,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 40px;
-    width: 350px; /* Increased width */
+    width: 350px; /* Largeur augmentée */
     max-width: 100%;
     display: flex;
     flex-direction: column;
@@ -118,13 +140,6 @@
     display: none;
   }
 
-  .success-message {
-    color: #28a745;
-    font-size: 14px;
-    margin-top: 5px;
-    display: none;
-  }
-
   .password-input {
     position: relative;
     display: flex;
@@ -133,17 +148,18 @@
     width: 100%;
   }
 
-  .toggle-password {
+  .toggle-form {
+    margin-top: 15px;
+    padding: 10px;
     background-color: #f8f9fa;
     border: none;
     cursor: pointer;
-    padding: 10px;
     font-size: 14px;
     color: #007bff;
     transition: color 0.3s ease;
   }
 
-  .toggle-password:hover {
+  .toggle-form:hover {
     color: #0056b3;
   }
 </style>
