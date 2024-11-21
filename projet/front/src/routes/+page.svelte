@@ -8,8 +8,19 @@
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log('Login attempt:', { username, password });
-    // Voici où vous devriez envoyer ces données à votre serveur
+    console.log('Attempt:', isRegistering ? 'Registration' : 'Login', username, password);
+    
+    if (isRegistering) {
+      if (password !== confirmPassword) {
+        alert("Les mots de passe ne correspondent pas");
+        return;
+      }
+      // Voici où vous devriez envoyer ces données à votre serveur pour l'enregistrement
+      console.log('Sending registration data:', { username, password });
+    } else {
+      // Voici où vous devriez envoyer ces données à votre serveur pour la connexion
+      console.log('Sending login data:', { username, password });
+    }
   }
 
   function toggleForm() {
