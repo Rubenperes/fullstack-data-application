@@ -9,5 +9,5 @@ npm install
 echo "verif vite"
 npm list vite
 
-echo  "run dev"
+echo "run dev"
 npm run dev
