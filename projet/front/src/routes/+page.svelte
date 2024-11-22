@@ -1,22 +1,50 @@
 <script>
-  let username = '';
-  let password = '';
-  let confirmPassword = '';
+  import { writable } from 'svelte/store';
+
+  const username = writable('');
+  const password = writable('');
+  const confirmPassword = writable('');
+
+  $username = '';
+  $password = '';
+  $confirmPassword = '';
+
   let isRegistering = false;
 
   $: isFormValid = username && password && confirmPassword && password === confirmPassword;
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log('Attempt:', isRegistering ? 'Registration' : 'Login', username, password);
+    console.log('Attempt:', isRegistering ? 'Registration' : 'Login', $username, $password);
     
     if (isRegistering) {
-      if (password !== confirmPassword) {
+      if ($password !== $confirmPassword) {
         alert("Les mots de passe ne correspondent pas");
         return;
       }
-      // Voici où vous devriez envoyer ces données à votre serveur pour l'enregistrement
-      console.log('Sending registration data:', { username, password });
+      try {
+      const response = await fetch('http://localhost:5000/users/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: $username, password: $password })
+      });
+
+      if (!response.ok) {
+        throw new Error('Registration failed');
+      }
+
+      const result = await response.json();
+      console.log('User registered successfully:', result);
+      
+      // Clear fields after successful registration
+      $username = '';
+      $password = '';
+    } catch (error) {
+      console.error('Error:', error);
+      alert(error.message || 'An unexpected error occurred');
+    }
     } else {
       // Voici où vous devriez envoyer ces données à votre serveur pour la connexion
       console.log('Sending login data:', { username, password });
@@ -34,16 +62,16 @@
   {#if isRegistering}
     <form on:submit|preventDefault={handleSubmit}>
       <label for="username">Nom d'utilisateur :</label>
-      <input type="text" id="username" bind:value={username} required>
+      <input type="text" id="username" bind:value={$username} required>
 
       <div class="password-input">
         <label for="password">Mot de passe :</label>
-        <input type="password" id="password" bind:value={password} required>
+        <input type="password" id="password" bind:value={$password} required>
       </div>
 
       <div class="password-input">
         <label for="confirmPassword">Confirmer le mot de passe :</label>
-        <input type="password" id="confirmPassword" bind:value={confirmPassword} required>
+        <input type="password" id="confirmPassword" bind:value={$confirmPassword} required>
       </div>
 
       <button type="submit">{isRegistering ? 'Enregistrer' : 'Basculer'}</button>
@@ -53,11 +81,11 @@
   {:else}
     <form on:submit|preventDefault={handleSubmit}>
       <label for="username">Nom d'utilisateur :</label>
-      <input type="text" id="username" bind:value={username} required>
+      <input type="text" id="username" bind:value={$username} required>
 
       <div class="password-input">
         <label for="password">Mot de passe :</label>
-        <input type="password" id="password" bind:value={password} required>
+        <input type="password" id="password" bind:value={$password} required>
       </div>
 
       <button type="submit">Connexion</button>
