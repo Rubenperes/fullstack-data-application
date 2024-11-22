@@ -29,7 +29,7 @@
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username: $username, password: $password })
+        body: JSON.stringify({ username: $username, password: $password, role: "customer" })
       });
 
       if (!response.ok) {
@@ -49,12 +49,12 @@
     }
     } else {
       try {
-      const response = await fetch('http://localhost:5000/auth/', {
+      const response = await fetch('http://localhost:5000/auth/token/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username: $username, password: $password })
+        body: JSON.stringify({ username: $username, password: $password, role: "customer" })
       });
 
       if (!response.ok) {

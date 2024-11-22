@@ -19,7 +19,7 @@ def create_user(db: Session, user: User) -> models.User:
         raise HTTPException(status_code=409, detail="Username already taken")
 
     db_user = models.User(
-        id=str(uuid4()), username=user.username, password=user.password
+        id=str(uuid4()), username=user.username, password=user.password, role=user.role
     )
     db.add(db_user)
     db.commit()

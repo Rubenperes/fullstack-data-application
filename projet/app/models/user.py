@@ -14,6 +14,7 @@ class User(BaseSQL):
     id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=str(uuid4()))
     username = Column(String, unique=True)
     password = Column(String)
+    role = Column(String)
     created_at = Column(DateTime(), default=datetime.now())
     updated_at = Column(DateTime(), default=datetime.now())
 

@@ -8,3 +8,4 @@ from typing_extensions import Annotated
 class User(BaseModel):
     username: str
     password: str
+    role: str
