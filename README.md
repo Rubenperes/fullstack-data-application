@@ -5,10 +5,6 @@ Sommaire :
 1. Description Globale du projet
 2. Les Outils utilisées
 3. Guide d'utilisation
-   A. Lancer le projet
-   B. Page d'Inscription
-   C. Page de Connexion
-   D. Page Utilisateur
 4. Conseils pour les gestions de build
 5. Conclusions et axes d'améliorations
 
