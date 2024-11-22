@@ -1,43 +1,115 @@
 <script>
-  let inputValue = '';
-  let imageUrl = ''; // Ajoutez cette ligne
-  let apiUrl = 'https://api.example.com/search';
-  let apiKey = 'YOUR_API_KEY_HERE';
+    import { onMount } from 'svelte';
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    
-    try {
-      // Placeholder pour l'appel à l'API
-      // const response = await fetch(`${apiUrl}?query=${encodeURIComponent(inputValue)}&key=${apiKey}`);
-      
-      // Placeholder pour le traitement de la réponse API
-      // const data = await response.json();
-      
-      // Placeholder pour la récupération de l'image
-      // imageUrl = data.results[0]?.urls?.regular || '';
-      
-      alert(`Image trouvée : ${imageUrl}`); // Placeholder pour afficher un message d'alerte
-    } catch (error) {
-      console.error('Erreur lors du chargement de l\'image:', error);
-      alert('Une erreur s\'est produite lors du chargement de l\'image.');
+    let inputValue = '';
+    let imageUrl = '';
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        
+        try {
+            const response = await fetch(`https://api.example.com/search?query=${encodeURIComponent(inputValue)}&key=YOUR_API_KEY_HERE`);
+            const data = await response.json();
+            imageUrl = data.results[0]?.urls?.regular || '';
+            alert(`Image trouvée : ${imageUrl}`);
+        } catch (error) {
+            console.error('Erreur lors du chargement de l\'image:', error);
+            alert('Une erreur s\'est produite lors du chargement de l\'image.');
+        }
     }
-  }
 
-  function handleImageChange(event) {
-    imageUrl = event.target.value;
-  }
+    function handleChange(event) {
+        inputValue = event.target.value;
+    }
 </script>
 
-<form on:submit|preventDefault={handleSubmit}>
-  <label for="input-field">Entrez votre texte :</label>
-  <input type="text" id="input-field" bind:value={inputValue} />
-  <br />
-  <button type="submit">Chercher une image</button>
-</form>
+<div class="img-generation">
 
-<p>Votre texte entré : {inputValue}</p>
+  <h1> Générateur d'image </h1>
 
-<div class="image-container">
-  <img src={imageUrl ? imageUrl : ''} alt="Image affichée" placeholder="N" />
+  <form on:submit|preventDefault={handleSubmit}>
+      <label for="input-field">Entrez votre texte :</label>
+      <input type="text" id="input-field" bind:value={inputValue} on:input={handleChange} />
+      <br />
+      <button type="submit">Générer une image</button>
+  </form>
+
+  <div class="button-container">
+    <button type="submit" class="save-button">Enregistrer l'image</button>
+    <button type="submit" class="view-button">Afficher mes images</button>
+  </div>
+
 </div>
+
+<style>
+
+    .img-generation {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        padding-top: 50px;
+        width: 350px; /* Largeur augmentée */
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      justify-content: center;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+
+    form {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        padding-bottom: 5px;
+    }
+
+    button {
+        background-color: #007bff;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: auto;
+        padding-top: 20px;
+    }
+
+    .save-button {
+        float: right;
+    }
+
+    .view-button {
+        float: left;
+    }
+
+</style>
+
