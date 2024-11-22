@@ -9,7 +9,6 @@ Sommaire :
    B. Page d'Inscription
    C. Page de Connexion
    D. Page Utilisateur
-   E. Enregistrement des images
 4. Conseils pour les gestions de build
 5. Conclusions et axes d'améliorations
 
@@ -102,8 +101,6 @@ Voici un exemple de prompt que l'on peut faire :
 
 A noter : Le temps de chargement est d'environ 1 minute voire un peu plus.
 
-**E - Enregistrement des images :**
-
 **4. Conseils pour les gestions de build:**
 
 Nous avons remarqué que, lorsque l'on build avec la commande : 
@@ -120,7 +117,7 @@ Il faut simplement supprimer ce fichier (qui, après chaque re-build, réappara�
 
 **5. Conclusions et axes d'améliorations:**
 
-Ce qui saute aux yeux et qui pourrait être amélioré c'est principalement la galerie d'images que nous avons pas pu finir de programmer mise à part le bouton qui est présent.
+Ce qui saute aux yeux et qui pourrait être amélioré c'est principalement la créations de la galerie d'images (et donc de l'enregistrement des images prompts pour la session en cours) que nous avons pas pu finir de programmer mise à part les boutons qui sont présents.
 
 On peut en conclure que ce projet nous a permis d'apprendre beaucoup de nouvelles librairies et surtout, d'apprendre à assembler toutes les connaissances que nous avions au préalables dans un seul et même projet.
 
