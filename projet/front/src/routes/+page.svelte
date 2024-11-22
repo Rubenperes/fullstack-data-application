@@ -1,5 +1,6 @@
 <script>
   import { writable } from 'svelte/store';
+  import { goto } from '$app/navigation';
 
   const username = writable('');
   const password = writable('');
@@ -40,6 +41,8 @@
       
       $username = '';
       $password = '';
+      $confirmPassword = '';
+      isRegistering = false;
     } catch (error) {
       console.error('Error:', error);
       alert(error.message || 'An unexpected error occurred');
@@ -63,6 +66,10 @@
       
       $username = '';
       $password = '';
+
+      //navigate to /homepage
+      goto('/homepage');
+
     } catch (error) {
       console.error('Error:', error);
       alert(error.message || 'An unexpected error occurred');
@@ -115,6 +122,7 @@
 
   <button class="toggle-form" on:click={toggleForm}>{isRegistering ? 'Déjà enregistré? Connectez-vous' : 'Pas encore enregistré? Enregistrez-vous'}</button>
 </div>
+
 
 <style>
   :global(body) {
