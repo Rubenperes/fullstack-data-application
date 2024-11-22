@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
 
-    let inputValue = '';
+    let inputValue = '';    
     let imageUrl = '';
 
     async function handleSubmit(event) {
@@ -17,8 +17,15 @@
             });
 
             const data = await response.json();
-            imageUrl = data.results[0]?.urls?.regular || '';
-            alert(`Image trouvée : ${imageUrl}`);
+
+            if (data && data.results && data.results.length > 0) {
+                imageUrl = data.results[0] || '';
+            } else {
+                throw new Error('No valid results found in the API response');
+            }
+
+            alert(`Image found: ${imageUrl}`);
+
         } catch (error) {
             console.error('Erreur lors du chargement de l\'image:', error);
             alert('Une erreur s\'est produite lors du chargement de l\'image.');
@@ -47,6 +54,14 @@
   </div>
 
 </div>
+
+{#if imageUrl}
+    <div class="image-container">
+        <img src={imageUrl} alt="Generated image" />
+    </div>
+{:else}
+  <p>Génération de l'image en cours...</p>
+{/if}
 
 <style>
 

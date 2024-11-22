@@ -10,4 +10,3 @@ gen_img_router = APIRouter(prefix="/gen-img")
 @gen_img_router.post("/", tags=["gen-img"])
 async def generate_image(image : Image):
         return gen_image(image.prompt)
-    
