@@ -16,13 +16,13 @@
                 body: JSON.stringify({ prompt : inputValue})
             });
 
-            const data = await response.json();
+            const data = await response.text();
 
-            if (data && data.results && data.results.length > 0) {
-                imageUrl = data.results[0] || '';
-            } else {
-                throw new Error('No valid results found in the API response');
-            }
+            const result = JSON.parse(data)
+
+            console.log('result : ${result}')
+
+            imageUrl = result.data[0].asset_url;
 
             alert(`Image found: ${imageUrl}`);
 
