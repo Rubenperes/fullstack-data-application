@@ -18,13 +18,11 @@
 
             const data = await response.text();
 
-            const result = JSON.parse(data)
+            console.log({data});
 
-            console.log('result : ${result}')
+            imageUrl = data.replace(/"/g, '').trim();
 
-            imageUrl = result.data[0].asset_url;
-
-            alert(`Image found: ${imageUrl}`);
+            console.log({imageUrl});
 
         } catch (error) {
             console.error('Erreur lors du chargement de l\'image:', error);
