@@ -57,8 +57,6 @@
     <div class="image-container">
         <img src={imageUrl} alt="Generated image" />
     </div>
-{:else}
-  <p>Génération de l'image en cours...</p>
 {/if}
 
 <style>
@@ -76,6 +74,15 @@
         align-items: center;
         margin: 0 auto;
     }
+
+    .image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding-top: 20px;
+    }
+
 
     h1 {
       text-align: center;
