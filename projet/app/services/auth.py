@@ -5,7 +5,7 @@ import jwt
 from fastapi import Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 
-import app.models
+import app.models as models
 from app.schemas.users import User
 
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "should-be-an-environment-variable")

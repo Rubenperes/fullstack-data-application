@@ -38,7 +38,6 @@
       const result = await response.json();
       console.log('User registered successfully:', result);
       
-      // Clear fields after successful registration
       $username = '';
       $password = '';
     } catch (error) {
@@ -46,8 +45,28 @@
       alert(error.message || 'An unexpected error occurred');
     }
     } else {
-      // Voici où vous devriez envoyer ces données à votre serveur pour la connexion
-      console.log('Sending login data:', { username, password });
+      try {
+      const response = await fetch('http://localhost:5000/auth/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: $username, password: $password })
+      });
+
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+
+      const result = await response.json();
+      console.log('User logged successfully:', result);
+      
+      $username = '';
+      $password = '';
+    } catch (error) {
+      console.error('Error:', error);
+      alert(error.message || 'An unexpected error occurred');
+    }
     }
   }
 
