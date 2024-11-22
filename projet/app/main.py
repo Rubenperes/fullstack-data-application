@@ -10,6 +10,7 @@ from app.models import BaseSQL, engine
 import app.routers as routers
 from app.routers.auth import auth_router
 from app.routers.users import user_router
+from app.routers.gen_img import gen_img_router
 
 app = FastAPI(
     title="Auth app",
@@ -34,6 +35,7 @@ app.include_router(routers.PostRouter)
 app.include_router(routers.HealthRouter)
 app.include_router(user_router)
 app.include_router(auth_router)
+app.include_router(gen_img_router)
 
 app.add_middleware(PrometheusMiddleware)
 
