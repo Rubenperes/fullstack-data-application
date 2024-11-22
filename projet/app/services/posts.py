@@ -3,11 +3,11 @@ from typing import List
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from datetime import datetime
-from app import models, schemas
+import app.models as models, app.schemas as schemas
 
 
 def get_all_posts(db: Session, skip: int = 0, limit: int = 10) -> List[models.Post]:
-    records = db.query(models.Post).filter().offset(skip).limit(limit).all()
+    records = db.query(models.Post).filter().all()
     for record in records:
         record.id = str(record.id)
     return records
@@ -16,7 +16,7 @@ def get_all_posts(db: Session, skip: int = 0, limit: int = 10) -> List[models.Po
 def get_post_by_id(post_id: str, db: Session) -> models.Post:
     record = db.query(models.Post).filter(models.Post.id == post_id).first()
     if not record:
-        raise HTTPException(status_code=404, detail="Not Found") 
+        raise HTTPException(status_code=404, detail="Not Found")
     record.id = str(record.id)
     return record
 
@@ -26,6 +26,10 @@ def get_posts_by_title(title: str, db: Session) -> List[models.Post]:
     for record in records:
         record.id = str(record.id)
     return records
+
+
+def get_posts_for_user(db: Session, user_id: str) -> List[models.Post]:
+    return db.query(models.Post).filter(models.Post.user_id == user_id).all()
 
 
 def update_post(post_id: str, db: Session, post: schemas.Post) -> models.Post:
@@ -54,11 +58,9 @@ def delete_all_posts(db: Session) -> List[models.Post]:
     return records
 
 
-def create_post(db: Session, post: schemas.Post) -> models.Post:
-    record = db.query(models.Post).filter(models.Post.id == post.id).first()
-    if record:
-        raise HTTPException(status_code=409, detail="Already exists")
+def create_post(db: Session, user_id: str, post: schemas.Post) -> models.Post:
     db_post = models.Post(**post.dict())
+    db_post.user_id = user_id
     db.add(db_post)
     db.commit()
     db.refresh(db_post)

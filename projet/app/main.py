@@ -1,15 +1,19 @@
+import base64
 from typing import Optional
-from fastapi import FastAPI
+from fastapi import FastAPI, Header
 from fastapi.middleware.cors import CORSMiddleware
 import json
-import asyncio
-import os
+
+from starlette.requests import Request
 from starlette_exporter import PrometheusMiddleware, handle_metrics
 from app.models import BaseSQL, engine
-from app import routers
+import app.routers as routers
+from app.routers.auth import auth_router
+from app.routers.users import user_router
+from app.routers.gen_img import gen_img_router
 
 app = FastAPI(
-    title="My title",
+    title="Auth app",
     description="My description",
     version="0.0.1",
 )
@@ -29,14 +33,27 @@ app.add_middleware(
 
 app.include_router(routers.PostRouter)
 app.include_router(routers.HealthRouter)
+app.include_router(user_router)
+app.include_router(auth_router)
+app.include_router(gen_img_router)
 
 app.add_middleware(PrometheusMiddleware)
+
 app.add_route("/metrics", handle_metrics)
 
 
 @app.on_event("startup")
 async def startup_event():
     BaseSQL.metadata.create_all(bind=engine)
+
+
+@app.get("/api/headers")
+def read_hello(
+    request: Request,
+    x_userinfo: Optional[str] = Header(None, convert_underscores=True),
+):
+    print(request["headers"])
+    return {"Headers": json.loads(base64.b64decode(x_userinfo))}
 
 
 @app.get("/")
