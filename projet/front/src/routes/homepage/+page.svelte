@@ -8,19 +8,13 @@
         event.preventDefault();
         
         try {
-          const response = await fetch(`https://api.limewire.com/api/image/generation`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Api-Version': 'v1',
-              Accept: 'application/json',
-              Authorization: 'Bearer <YOUR_lmwr_sk_*_HERE>'
-            },
-            body: JSON.stringify({
-              prompt: inputValue,
-              aspect_ratio: '1:1'
-            })
-          });
+            const response = await fetch('http://localhost:5000/gen-img/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt : inputValue})
+            });
 
             const data = await response.json();
             imageUrl = data.results[0]?.urls?.regular || '';

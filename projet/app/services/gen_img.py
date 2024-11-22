@@ -8,7 +8,7 @@ import requests
 import app.models as models
 from app.schemas.users import User
 
-LIMEWARE_API_KEY = os.getenv("JWT_SECRET_KEY", "should-be-an-environment-variable")
+LIMEWARE_API_KEY = os.getenv("LIMEWARE_API_KEY", "should-be-an-environment-variable")
 
 def gen_image(prompt):
     url = "https://api.limewire.com/api/image/generation"
